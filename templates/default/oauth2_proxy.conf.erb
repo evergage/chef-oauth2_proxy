@@ -1,0 +1,46 @@
+#
+# OAuth2 Proxy Config File 
+# - Managed by Chef
+#
+
+## The OAuth Client ID, Secret
+client_id = "<%= @client_id %>"
+client_secret = "<%= @client_secret %>"
+
+# Listener
+http_address = "<%= @listen_address %>:<%= @listen_port %>"
+proxy-prefix = "<%= @proxy_prefix %>"
+
+redirect_url = "<%= @redirect_url %>"
+request_logging = <%= @request_logging.to_s %>
+
+# HTTP upstreams to redirect to
+upstreams = <%= @upstreams.to_s %>
+
+# Email Domains to allow authentication for
+email_domains = <%= @email_domains.to_s %>
+
+# Pass HTTP Basic Auth, X-Forwarded-User and X-Forwarded-Email
+pass_basic_auth = <%= @pass_basic_auth.to_s %>
+
+# Pass the request Host Header to upstream
+# - When disabled the upstream Host is used as the Host Header
+pass_host_header = <%= @pass_host_header.to_s %>
+
+## Pass OAuth Access token to upstream via "X-Forwarded-Access-Token"
+pass_access_token = <%= @pass_access_token.to_s %>
+
+# Templates
+# - Optional directory with custom sign_in.html and error.html
+custom_templates_dir = "<%= @custom_templates_dir %>"
+
+# Cookie Settings
+cookie_name = "<%= @cookie_name %>"
+cookie_secret = "<%= @cookie_secret %>"
+cookie_expire = "<%= @cookie_expire %>"
+cookie_refresh = "<%= @cookie_refresh %>"
+cookie_secure = <%= @cookie_secure.to_s %>
+cookie_httponly = <%= @cookie_httponly %>
+
+# Providers
+provider = "<%= @oauth_provider %>"

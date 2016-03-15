@@ -1,0 +1,8 @@
+name 'oauth2_proxy'
+maintainer 'Jonathan Serafini'
+maintainer_email 'jonathan@serafini.ca'
+license 'all_rights'
+description 'Installs/Configures oauth2_proxy'
+long_description 'Installs/Configures oauth2_proxy'
+version '0.1.0'
+depends 'common_attrs'
