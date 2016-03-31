@@ -64,7 +64,10 @@ property :cookie_name,
 property :cookie_secret,
   coerce: proc { |value| Common::Delegator::ObfuscatedType.new(value) },
   kind_of: String,
-  default: lazy { SecureRandom.hex }
+  default: lazy { 
+    Chef::Log.warn "#{self} setting random cookie_secret, this may break load balancing."
+    SecureRandom.hex 
+  }
 
 property :cookie_domain,
   kind_of: String
@@ -110,7 +113,7 @@ action :create do
     cookbook "oauth2_proxy"
     sensitive true
     variables config
-    if enabled
+    if new_resource.enabled
       notifies  :restart, "service[oauth2_proxy_#{new_resource.name}]"
     end
   end
@@ -124,13 +127,13 @@ action :create do
     variables config_path: "/etc/oauth2_proxy/#{new_resource.name}.conf",
               user: node[:oauth2_proxy][:user],
               name: new_resource.name
-    if enabled
+    if new_resource.enabled
       notifies  :restart, "service[oauth2_proxy_#{new_resource.name}]"
     end
   end
 
   service "oauth2_proxy_#{new_resource.name}" do
-    action enabled ? :enable : :disable
+    action new_resource.enabled ? :enable : :disable
   end
 end
 
