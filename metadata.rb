@@ -5,4 +5,8 @@ license 'apache2'
 description 'Installs/Configures oauth2_proxy'
 long_description 'Installs/Configures oauth2_proxy'
 version '0.2.0'
+
 depends 'common_attrs'
+depends 'golang', '~> 1.7.0'
+depends 'apt', '~> 3.0'
+depends 'ark', '~> 1.0.1'
