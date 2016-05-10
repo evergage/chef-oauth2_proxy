@@ -44,3 +44,7 @@ cookie_httponly = <%= @cookie_httponly %>
 
 # Providers
 provider = "<%= @oauth_provider %>"
+
+<% @extra_opts.each do |opt, value| %>
+<%= opt %> = "<%= value %>"
+<% end %>
