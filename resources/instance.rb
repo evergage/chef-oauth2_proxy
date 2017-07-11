@@ -96,6 +96,10 @@ property :enabled,
          kind_of: [TrueClass, FalseClass],
          default: true
 
+property :start_when_enabled,
+         kind_of: [TrueClass, FalseClass],
+         default: false
+
 property :extra_opts,
          kind_of: Hash,
          default: {}
@@ -140,7 +144,7 @@ action :create do
   service "oauth2_proxy_#{new_resource.name}" do
     # Since we install only the upstart scripts, make sure Chef doesn't try to use SysV or other provider
     provider Chef::Provider::Service::Upstart
-    action new_resource.enabled ? :enable : :disable
+    action new_resource.enabled ? (new_resource.start_when_enabled ? [:enable, :start] : :enable) : :disable
   end
 end
 
