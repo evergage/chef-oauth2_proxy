@@ -138,6 +138,8 @@ action :create do
   end
 
   service "oauth2_proxy_#{new_resource.name}" do
+    # Since we install only the upstart scripts, make sure Chef doesn't try to use SysV or other provider
+    provider Chef::Provider::Service::Upstart
     action new_resource.enabled ? :enable : :disable
   end
 end
