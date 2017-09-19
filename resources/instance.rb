@@ -126,11 +126,11 @@ action :create do
     end
   end
 
-  template "/etc/init/oauth2_proxy_#{new_resource.name}.conf" do
-    source 'oauth2_service.conf.erb'
+  template "/etc/init.d/oauth2_proxy_#{new_resource.name}" do
+    source 'oauth2_init.d.sh.erb'
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0755
     cookbook 'oauth2_proxy'
     variables config_path: "/etc/oauth2_proxy/#{new_resource.name}.conf",
               user: node['oauth2_proxy']['user'],
@@ -142,8 +142,8 @@ action :create do
   end
 
   service "oauth2_proxy_#{new_resource.name}" do
-    # Since we install only the upstart scripts, make sure Chef doesn't try to use SysV or other provider
-    provider Chef::Provider::Service::Upstart
+    # Since we install only an init.d script, make sure Chef doesn't try to use Upstart or other provider.
+    provider Chef::Provider::Service::Redhat
     action new_resource.enabled ? (new_resource.start_when_enabled ? [:enable, :start] : :enable) : :disable
   end
 end
