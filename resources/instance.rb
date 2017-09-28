@@ -142,8 +142,6 @@ action :create do
   end
 
   service "oauth2_proxy_#{new_resource.name}" do
-    # Since we install only an init.d script, make sure Chef doesn't try to use Upstart or other provider.
-    provider Chef::Provider::Service::Redhat
     action new_resource.enabled ? (new_resource.start_when_enabled ? [:enable, :start] : :enable) : :disable
   end
 end
