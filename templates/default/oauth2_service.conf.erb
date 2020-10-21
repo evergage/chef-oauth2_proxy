@@ -7,6 +7,6 @@ respawn
 respawn limit 10 2
 
 script
-  exec sudo -u <%= @user %> /usr/local/bin/oauth2_proxy -config="<%= @config_path %>"
+  exec sudo -u <%= @user %> /usr/local/bin/oauth2-proxy --config="<%= @config_path %>"
 end script
 
