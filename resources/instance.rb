@@ -111,6 +111,7 @@ action :create do
     mode 0750
   end
 
+  name = new_resource.name
   config = new_resource.to_hash
 
   template "/etc/oauth2_proxy/#{name}.conf" do
@@ -122,26 +123,26 @@ action :create do
     sensitive true
     variables config
     if new_resource.enabled
-      notifies :restart, "service[oauth2_proxy_#{new_resource.name}]"
+      notifies :restart, "service[oauth2_proxy_#{name}]"
     end
   end
 
-  template "/etc/init/oauth2_proxy_#{new_resource.name}.conf" do
+  template "/etc/init/oauth2_proxy_#{name}.conf" do
     source 'oauth2_service.conf.erb'
     owner 'root'
     group 'root'
     mode 0644
     cookbook 'oauth2_proxy'
-    variables config_path: "/etc/oauth2_proxy/#{new_resource.name}.conf",
+    variables config_path: "/etc/oauth2_proxy/#{name}.conf",
               user: node['oauth2_proxy']['user'],
-              name: new_resource.name,
+              name: name,
               extra_opts: new_resource.extra_opts
     if new_resource.enabled
-      notifies :restart, "service[oauth2_proxy_#{new_resource.name}]"
+      notifies :restart, "service[oauth2_proxy_#{name}]"
     end
   end
 
-  service "oauth2_proxy_#{new_resource.name}" do
+  service "oauth2_proxy_#{name}" do
     # Since we install only the upstart scripts, make sure Chef doesn't try to use SysV or other provider
     provider Chef::Provider::Service::Upstart
     action new_resource.enabled ? (new_resource.start_when_enabled ? [:enable, :start] : :enable) : :disable
@@ -149,15 +150,15 @@ action :create do
 end
 
 action :delete do
-  service "oauth2_proxy_#{new_resource.name}" do
+  service "oauth2_proxy_#{name}" do
     action [:stop, :disable]
   end
 
-  template "/etc/oauth2_proxy/#{new_resource.name}.conf" do
+  template "/etc/oauth2_proxy/#{name}.conf" do
     action :delete
   end
 
-  template "/etc/init/oauth2_proxy_#{new_resource.name}.conf" do
+  template "/etc/init/oauth2_proxy_#{name}.conf" do
     action :delete
   end
 end
