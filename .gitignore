@@ -1,5 +1,4 @@
 .vagrant
-Berksfile.lock
 *~
 *#
 .#*
@@ -14,3 +13,7 @@ bin/*
 
 .kitchen/
 .kitchen.local.yml
+
+# IntelliJ
+.idea/
+*.iml
