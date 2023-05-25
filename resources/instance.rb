@@ -130,7 +130,7 @@ action :create do
   template "oauth2_proxy_#{name}.conf" do
     case node['init_package']
     when 'systemd'
-      path "/etc/systemd/system/oauth2_proxy_#{name}.service"
+      path "/usr/lib/systemd/system/oauth2_proxy_#{name}.service"
       source 'oauth2_service_systemd.conf.erb'
     when 'upstart'
       path "/etc/init/oauth2_proxy_#{name}.conf"
