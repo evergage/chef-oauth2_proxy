@@ -127,8 +127,18 @@ action :create do
     end
   end
 
-  template "/etc/init/oauth2_proxy_#{name}.conf" do
-    source 'oauth2_service.conf.erb'
+  template "oauth2_proxy_#{name}.conf" do
+    case node['init_package']
+    when 'systemd'
+      path "/usr/lib/systemd/system/oauth2_proxy_#{name}.service"
+      source 'oauth2_service_systemd.conf.erb'
+    when 'upstart'
+      path "/etc/init/oauth2_proxy_#{name}.conf"
+      source 'oauth2_service.conf.erb'
+    else
+      path "/etc/init/oauth2_proxy_#{name}.conf"
+      source 'oauth2_service.conf.erb'
+    end
     owner 'root'
     group 'root'
     mode 0644
@@ -142,9 +152,22 @@ action :create do
     end
   end
 
+  execute 'systemctl daemon-reload' do
+    action :nothing
+    only_if { node['init_package'] == 'systemd' }
+    subscribes :run, "template[oauth2_proxy_#{name}.service]", :immediately
+  end
+
+
   service "oauth2_proxy_#{name}" do
-    # Since we install only the upstart scripts, make sure Chef doesn't try to use SysV or other provider
-    provider Chef::Provider::Service::Upstart
+    case node['init_package']
+    when 'systemd'
+      provider Chef::Provider::Service::Systemd
+    when 'upstart'
+      provider Chef::Provider::Service::Upstart
+    else
+      provider Chef::Provider::Service::Init
+    end
     action new_resource.enabled ? (new_resource.start_when_enabled ? [:enable, :start] : :enable) : :disable
   end
 end

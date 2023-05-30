@@ -1,0 +1,14 @@
+[Unit]
+Description=Oauth2 Proxy for <%= @name %>
+After=network.target
+
+[Service]
+User=<%= @user %>
+ExecStart=/usr/local/bin/oauth2-proxy --config=<%= @config_path %>
+Restart=always
+RestartSec=2
+StartLimitInterval=0
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target
