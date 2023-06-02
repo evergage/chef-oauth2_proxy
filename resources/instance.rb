@@ -163,10 +163,8 @@ action :create do
     case node['init_package']
     when 'systemd'
       provider Chef::Provider::Service::Systemd
-    when 'upstart'
-      provider Chef::Provider::Service::Upstart
     else
-      provider Chef::Provider::Service::Init
+      provider Chef::Provider::Service::Upstart
     end
     action new_resource.enabled ? (new_resource.start_when_enabled ? [:enable, :start] : :enable) : :disable
   end
