@@ -4,7 +4,7 @@ maintainer_email 'jonathan@serafini.ca'
 license 'apache2'
 description 'Installs/Configures oauth2_proxy'
 long_description 'Installs/Configures oauth2_proxy'
-version '0.2.6'
+version '0.2.7'
 
 depends 'common_attrs'
 depends 'golang', '~> 1.7.0'
