@@ -54,6 +54,16 @@ property :pass_host_header,
          kind_of: [TrueClass, FalseClass],
          default: true
 
+property :tls_cert_file,
+         kind_of: String,
+         coerce: proc { |value| Common::Delegator::ObfuscatedType.new(value) },
+         required: false
+
+property :tls_key_file,
+         kind_of: String,
+         coerce: proc { |value| Common::Delegator::ObfuscatedType.new(value) },
+         required: false
+
 property :custom_templates_dir,
          kind_of: String
 
