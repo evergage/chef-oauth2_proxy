@@ -8,7 +8,12 @@ client_id = "<%= @client_id %>"
 client_secret = "<%= @client_secret %>"
 
 # Listener
+
+<% if @tls_cert_file.to_s.nil? || @tls_cert_file.to_s.empty? %>
+http_address = "<%= @listen_address %>:<%= @listen_port %>"
+<% else %>
 https_address = "<%= @listen_address %>:<%= @listen_port %>"
+<% end %>
 proxy_prefix = "<%= @proxy_prefix %>"
 
 redirect_url = "<%= @redirect_url %>"
@@ -31,8 +36,10 @@ pass_host_header = <%= @pass_host_header.to_s %>
 pass_access_token = <%= @pass_access_token.to_s %>
 
 # TLS
+<% if !@tls_cert_file.to_s.nil? && !@tls_cert_file.to_s.to_s.empty? %>
 tls_cert_file = "<%= @tls_cert_file.to_s %>"
 tls_key_file = "<%= @tls_key_file.to_s %>"
+<% end %>
 
 # Templates
 # - Optional directory with custom sign_in.html and error.html

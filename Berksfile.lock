@@ -9,7 +9,7 @@ GRAPH
   apt (7.5.12)
   common_attrs (0.4.6)
   golang (1.7.2)
-  oauth2_proxy (0.2.7)
+  oauth2_proxy (0.2.8)
     apt (>= 0.0.0)
     common_attrs (>= 0.0.0)
     golang (~> 1.7.0)
